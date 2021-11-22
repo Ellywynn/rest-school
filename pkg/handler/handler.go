@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/ellywynn/rest-school/service"
+	"github.com/ellywynn/rest-school/pkg/service"
 	"github.com/gin-gonic/gin"
 )
 
