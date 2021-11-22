@@ -18,7 +18,7 @@ func main() {
 
 	app := server.NewApp()
 
-	if err := app.Run(viper.GetString("port")); err != nil {
+	if err := app.Run(viper.GetString("server.port")); err != nil {
 		log.Fatalf("Error while running the server: %s", err.Error())
 	}
 }
