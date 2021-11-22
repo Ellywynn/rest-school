@@ -1,0 +1,13 @@
+# Database config
+db:
+  username: "postgres"
+  port: "5437"
+  host: "localhost"
+  dbname: "postgres"
+  sslmode: "disable"
+
+server:
+  port: "3000" # Application port
+  maxHeaderBytesMB: 1
+  writeTimeoutSeconds: 10
+  readTimeoutSeconds: 10
