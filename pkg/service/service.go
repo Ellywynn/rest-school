@@ -1,6 +1,6 @@
 package service
 
-import "github.com/ellywynn/rest-school/repository"
+import "github.com/ellywynn/rest-school/pkg/repository"
 
 type Service struct {
 }
