@@ -1,8 +1,10 @@
 package server
 
 import (
+	"context"
 	"net/http"
 	"os"
+	"os/signal"
 	"strconv"
 	"time"
 
@@ -32,22 +34,38 @@ func NewApp() *Server {
 		logrus.Fatalf("Database connection error: %s\n", err.Error())
 	}
 
+	port := viper.GetString("server.port")
+
 	repo := repository.NewRepository(db)
 	service := service.NewService(repo)
 	handler := handler.NewHandler(service)
 
-	port := viper.GetString("server.port")
-
 	server, err := createServer(port, handler.InitRoutes())
+
 	if err != nil {
-		logrus.Fatalf("Cannot create the server: %s", err.Error())
+		logrus.Fatalf("Cannot create server: %s", err.Error())
 	}
 
 	return server
 }
 
 func (s *Server) Run(port string) error {
-	return s.httpServer.ListenAndServe()
+	go func() {
+		if err := s.httpServer.ListenAndServe(); err != nil {
+			logrus.Fatalf("Failed to listen and serve: %+v", err)
+		}
+	}()
+
+	logrus.Println("Server started on port " + port)
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt, os.Interrupt)
+
+	<-quit
+	ctx, shutdown := context.WithTimeout(context.Background(), 5*time.Second)
+	defer shutdown()
+
+	return s.httpServer.Shutdown(ctx)
 }
 
 func createServer(port string, handler http.Handler) (*Server, error) {
@@ -71,7 +89,6 @@ func createServer(port string, handler http.Handler) (*Server, error) {
 	return &Server{
 		httpServer: &http.Server{
 			Addr:           ":" + port,
-			Handler:        handler,
 			MaxHeaderBytes: headerBytes << 20,
 			WriteTimeout:   time.Duration(writeTimeout) * time.Second,
 			ReadTimeout:    time.Duration(readTimeout) * time.Second,
