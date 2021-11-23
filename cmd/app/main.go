@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/ellywynn/rest-school/config"
-	"github.com/ellywynn/rest-school/server"
+	"github.com/ellywynn/rest-school/pkg/config"
+	"github.com/ellywynn/rest-school/pkg/server"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
