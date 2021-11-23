@@ -8,9 +8,9 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/ellywynn/rest-school/handler"
-	"github.com/ellywynn/rest-school/repository"
-	"github.com/ellywynn/rest-school/service"
+	"github.com/ellywynn/rest-school/pkg/handler"
+	"github.com/ellywynn/rest-school/pkg/repository"
+	"github.com/ellywynn/rest-school/pkg/service"
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
